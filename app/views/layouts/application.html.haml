@@ -1,0 +1,56 @@
+!!!
+%html
+  %head
+    %title= Settings.appname + '-' + yield(:title)
+    = stylesheet_link_tag    'application', media: 'all'
+    = javascript_include_tag 'application', 'highcharts/highcharts'
+    = javascript_include_tag 'application', 'fb-sdk'
+    = javascript_include_tag 'application', 'twitter'
+    = javascript_include_tag 'application', 'ga'
+    = csrf_meta_tags
+    /[if lt IE 9]
+      <script src='http://html5shim.googlecode.com/svn/trunk/html5.js'></script>
+  %body
+    #fb-root
+    %header.navbar.navbar-fixed-top
+      .navbar-inner
+        .container
+          = link_to Settings.appname, root_path, class: 'brand'
+          %nav
+            %ul.nav.pull-left
+              %li{class: current_page?(root_path) ? 'active' : nil}= link_to 'Home', root_path
+              %li{class: current_page?(queries_path) ? 'active' : nil}= link_to 'Queries', queries_path
+              %li.divider-vertical
+              = form_for :search, url: search_path, html: { class: 'navbar-search pull-left' } do |f|
+                = f.text_field :query, placeholder: 'Search', class: 'search-query'
+            %ul.nav.pull-right
+              - if user_signed_in?
+                %li{class: current_page?(destroy_user_session_path) ? 'active' : nil}= link_to 'Sign out', destroy_user_session_path, method: :delete
+              - else
+                %li{class: current_page?(new_user_session_path) ? 'active' : nil}= link_to 'Sign in', new_user_session_path
+    .container
+      .hero-unit
+        - flash.each do |key, value|
+          .alert{class: 'alert-' + key.to_s}= value
+        = yield
+    / TOFIX: center footer alignment
+    %footer
+      .container
+        %ul.nav.nav-pills.pull-left
+          %li{class: current_page?(about_path) ? 'active' : nil}= link_to 'About', about_path
+          %li{class: current_page?(feedback_path) ? 'active' : nil}= link_to 'Feedback', feedback_path
+          %li= link_to 'Blog', 'http://vasil-y.com', target: '_blank'
+        %ul.nav.nav-pills.pull-right
+          %li.social
+            .fb-like{'data-font' => 'arial',
+                     'data-href' => 'http://' + Settings.appdomain,
+                     'data-layout' => 'button_count',
+                     'data-send' => 'false',
+                     'data-show-faces' => 'true',
+                     'data-width' => '150'}
+          %li.social
+            %a.twitter-share-button{'data-hashtags' => 'funsearch,google',
+                                    'data-lang' => 'en',
+                                    'data-text' => 'Fun Google Autocomplete Queries',
+                                    'data-url' => 'http://' + Settings.appdomain,
+                                    href: 'https://twitter.com/share'} Tweet

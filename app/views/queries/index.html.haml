@@ -1,0 +1,11 @@
+- provide(:title, 'Queries')
+%h3 Queries
+.container-fluid.well
+  .row-fluid
+    .span8.header
+      Query
+    .span1
+      Votes
+  = will_paginate @queries, inner_window: 2
+  = render partial: 'shared/table_entry', collection: @queries
+  = will_paginate @queries, inner_window: 2

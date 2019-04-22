@@ -1,0 +1,10 @@
+- provide(:title, 'Home')
+%h3 Top Queries
+.container-fluid.well
+  .row-fluid
+    .span8.header
+      Query
+    .span1
+      Votes
+  = render partial: 'shared/table_entry', collection: @queries
+= link_to 'More...', queries_path

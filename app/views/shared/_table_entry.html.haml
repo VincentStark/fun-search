@@ -1,0 +1,5 @@
+.row-fluid.highlight
+  .span8
+    %b= link_to query.contents, Settings.search_url + CGI.escape(query.contents)
+  .span1
+    = query.votes
